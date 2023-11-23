@@ -1,5 +1,4 @@
-﻿using PatternsBusStorage.Application.Repositories;
-using PatternsBusStorage.Bll.Repositories;
+﻿using PatternsBusStorage.Bll.Repositories;
 using PatternsBusStorage.Domain.Aggregates;
 
 namespace PatternsBusStorage.Bll.Services;
@@ -10,6 +9,7 @@ public class BusRouteService
 
     public BusRouteService(BusRouteRepository busRouteRepository)
     {
+        
         _busRouteRepository = busRouteRepository;
     }
 

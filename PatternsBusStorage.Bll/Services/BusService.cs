@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PatternsBusStorage.Application.Repositories;
+using PatternsBusStorage.Bll.Factories;
 using PatternsBusStorage.Bll.Repositories;
 using PatternsBusStorage.Dal;
 using PatternsBusStorage.Domain.Aggregates;
@@ -12,7 +13,8 @@ public class BusService
 
     public BusService(IConfiguration configuration)
     {
-        _busRepository = DbRepositories.GetBusRepository(DbTypes.Mssql, configuration);
+        var sql = new MssqlDbFactory(configuration);
+        _busRepository = sql.CreateBusRepository();
     }
 
     public async Task<Bus> AddBus(Bus bus)

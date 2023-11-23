@@ -2,24 +2,24 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using PatternsBusStorage.Application.Repositories;
+using PatternsBusStorage.Dal;
 using PatternsBusStorage.Domain.Aggregates;
 using PatternsBusStorage.Domain.Exceptions.DbExceptions;
 
 namespace PatternsBusStorage.Bll.Repositories;
 
-public class ScheduleRepository : IRepository<Schedule>
+public class ScheduleRepository : IScheduleRepository
 {
-    private readonly string _connectionString;
+    private readonly SqlConnectionPool _sqlConnectionPool;
 
-    public ScheduleRepository(IConfiguration configuration)
+    public ScheduleRepository(SqlConnectionPool connectionPool)
     {
-        _connectionString = configuration.GetConnectionString("DapperString");
+        _sqlConnectionPool = connectionPool;
     }
 
     public async Task<Schedule> GetById(int id)
     {
-        await using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var sql = "SELECT * FROM Schedule" +
                   " WHERE ScheduleId = @ScheduleId";
@@ -36,8 +36,7 @@ public class ScheduleRepository : IRepository<Schedule>
 
     public async Task<IEnumerable<Schedule>> GetAll()
     {
-        await using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var sql = "SELECT * FROM Schedule";
 
@@ -48,8 +47,7 @@ public class ScheduleRepository : IRepository<Schedule>
 
     public async Task<Schedule> Add(Schedule entity)
     {
-        await using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var schedule = new { entity.BusId, entity.RouteId, entity.StopId, entity.DepartureTime, entity.ArrivalTime };
 
@@ -64,8 +62,7 @@ public class ScheduleRepository : IRepository<Schedule>
 
     public async Task<Schedule> Update(Schedule entity)
     {
-        await using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var schedule = new { entity.ScheduleId, entity.BusId, entity.StopId, entity.DepartureTime, entity.ArrivalTime };
 
@@ -84,8 +81,7 @@ public class ScheduleRepository : IRepository<Schedule>
 
     public async Task<string> Delete(int id)
     {
-        await using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var sql = "DELETE FROM Schedule WHERE ScheduleId = @ScheduleId";
 

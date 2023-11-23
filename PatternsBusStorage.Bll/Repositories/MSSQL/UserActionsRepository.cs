@@ -1,27 +1,24 @@
 ﻿using System.Data;
-using  PatternsBusStorage.Domain.Aggregates;
 using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using PatternsBusStorage.Application.Repositories;
 using PatternsBusStorage.Bll.DTOs;
+using PatternsBusStorage.Dal;
 
 namespace PatternsBusStorage.Bll.Repositories;
 
 public class UserActionsRepository : IUserActionsRepository
 {
 
-    private readonly string _connectionString;
+    private readonly SqlConnectionPool _sqlConnectionPool;
 
-    public UserActionsRepository(IConfiguration configuration)
+    public UserActionsRepository(SqlConnectionPool sqlConnectionPool)
     {
-        _connectionString = configuration.GetConnectionString("DapperString");
+        _sqlConnectionPool = sqlConnectionPool;
     }
 
     public async Task<List<ClosestBus>> GetClosestSchedule(int busId)
     {
-        var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var obj = new { StopId = busId };
         
@@ -37,8 +34,7 @@ public class UserActionsRepository : IUserActionsRepository
     
     public async Task<List<ClosestBus>> GetAllSchedulesByBusId(int busId)
     {
-        var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
+        await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var obj = new { StopId = busId };
         var res =  await connection.QueryAsync<ClosestBus>(

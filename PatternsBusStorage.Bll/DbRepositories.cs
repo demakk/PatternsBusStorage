@@ -12,8 +12,7 @@ public static class DbRepositories
     {
         return type switch
         {
-            DbTypes.Mssql => new BusRepository(configuration,
-                new SqlConnectionPool(configuration.GetConnectionString("DapperString"))),
+            DbTypes.Mssql => new BusRepository(new SqlConnectionPool(configuration.GetConnectionString("DapperString"))),
             DbTypes.MongoDb => new MongoDbBusRepository(),
             _ => throw new NotImplementedException()
         };

@@ -12,7 +12,7 @@ public class BusRepository : IBusRepository
     
     private readonly SqlConnectionPool _sqlConnectionPool;
 
-    public BusRepository(IConfiguration configuration, SqlConnectionPool sqlConnectionPool)
+    public BusRepository(SqlConnectionPool sqlConnectionPool)
     {
         _sqlConnectionPool = sqlConnectionPool;
     }
