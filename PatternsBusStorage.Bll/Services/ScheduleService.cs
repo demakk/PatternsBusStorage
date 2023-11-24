@@ -1,4 +1,5 @@
 ﻿using PatternsBusStorage.Application.Repositories;
+using PatternsBusStorage.Bll.Observer;
 using PatternsBusStorage.Bll.Repositories;
 using PatternsBusStorage.Domain.Aggregates;
 
@@ -24,9 +25,11 @@ public class ScheduleService
         return await _scheduleRepository.GetAll();
     }
 
-    public async Task<Schedule> UpdateSchedule(Schedule schedule)
+    public async Task<Schedule> UpdateSchedule(Schedule schedule, ScheduleSubject scheduleSubject)
     {
-        return await _scheduleRepository.Update(schedule);
+        var res = await _scheduleRepository.Update(schedule);
+        scheduleSubject.UpdateSchedule(schedule);
+        return res;
     }
 
     public async Task<Schedule> GetScheduleById(int id)

@@ -1,5 +1,6 @@
 using System.Configuration;
 using PatternsBusStorage.Application.Repositories;
+using PatternsBusStorage.Bll.Observer;
 using PatternsBusStorage.Bll.Repositories;
 using PatternsBusStorage.Bll.Services;
 using PatternsBusStorage.Dal;
@@ -17,6 +18,7 @@ builder.Services.AddScoped<CityRepository>();
 builder.Services.AddScoped<IBusRepository, BusRepository>();
 builder.Services.AddScoped<BusService>();
 
+builder.Services.AddScoped<IScheduleSubject, ScheduleSubject>();
 builder.Services.AddScoped<BusStopService>();
 builder.Services.AddScoped<BusStopRepository>();
 
