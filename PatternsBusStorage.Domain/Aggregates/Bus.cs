@@ -1,15 +1,16 @@
 ﻿using System.Text.RegularExpressions;
+using PatternsBusStorage.Domain.Mementos.Bus;
 
 namespace PatternsBusStorage.Domain.Aggregates;
 
 public class Bus
 {
-    public int BusId { get; private set; }
-    public string BusNumber { get; private set; }
-    public string? Model { get; private set; }
-    public int ManufacturingYear { get; private set; }
-    public int Capacity { get; private set; }
-    public string Status { get; private set; }
+    public int BusId { get; set; }
+    public string BusNumber { get; set; }
+    public string? Model { get;  set; }
+    public int ManufacturingYear { get; set; }
+    public int Capacity { get; set; }
+    public string Status { get; set; }
 
     public class BusBuilder
     {
@@ -56,5 +57,28 @@ public class Bus
             }
             return _bus;
         }
+        
+    }
+    
+    public BusMemento SaveToMemento()
+    {
+        return new BusMemento(this);
+    }
+
+    public void RestoreFromMemento(BusMemento memento)
+    {
+        BusId = memento.BusId;
+        BusNumber = memento.BusNumber;
+        Model = memento.Model;
+        ManufacturingYear = memento.ManufacturingYear;
+        Capacity = memento.Capacity;
+        Status = memento.Status;
+    }
+    
+    public override string ToString()
+    {
+        return $"BusId: {BusId}, BusNumber: {BusNumber}, Model: {Model}," +
+               $" ManufacturingYear: {ManufacturingYear}, Capacity: {Capacity}," +
+               $" Status: {Status}";
     }
 }

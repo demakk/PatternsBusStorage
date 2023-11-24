@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PatternsBusStorage.Api.DTOs.Bus;
+using PatternsBusStorage.Bll.Repositories;
 using PatternsBusStorage.Bll.Services;
 using PatternsBusStorage.Domain.Aggregates;
+using PatternsBusStorage.Domain.Mementos.Bus;
 
 namespace PatternsBusStorage.Api.Controllers;
 
@@ -79,6 +81,15 @@ public class BusController : ControllerBase
         public async Task<IActionResult> GetBusByNumber([FromRoute]string number)
         {
                 var res = await _busService.GetBusByNumber(number);
+                return Ok(res);
+        }
+
+
+        [HttpPatch]
+        [Route(ApiRoutes.Bus.MementoTest)]
+        public async Task<IActionResult> TestMementoByBusId(int id)
+        {
+                var res = await _busService.TestMemento(id);
                 return Ok(res);
         }
         

@@ -28,6 +28,7 @@ public static class ApiRoutes
     {
         public const string IdRoute = "{id}";
         public const string NumberRoute = "n/{number}";
+        public const string MementoTest = "{id}/memento";
     }
     
     public static class User

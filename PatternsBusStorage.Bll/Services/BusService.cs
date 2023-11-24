@@ -4,6 +4,7 @@ using PatternsBusStorage.Bll.Factories;
 using PatternsBusStorage.Bll.Repositories;
 using PatternsBusStorage.Dal;
 using PatternsBusStorage.Domain.Aggregates;
+using PatternsBusStorage.Domain.Mementos.Bus;
 
 namespace PatternsBusStorage.Bll.Services;
 
@@ -46,5 +47,33 @@ public class BusService
     public async Task<Bus> GetBusByNumber(string number)
     {
         return await _busRepository.GetBusByNumber(number);
+    }
+
+    public async Task<Bus> TestMemento(int id)
+    {
+        var bus  = await _busRepository.GetById(id);
+        
+        // Instantiate the BusCareTaker
+        var busCareTaker = new BusCareTaker();
+
+        // Save the initial state to the caretaker
+        busCareTaker.AddMemento(bus.SaveToMemento());
+        
+        Console.WriteLine(bus.ToString());
+        
+        // Modify the bus entity
+        bus.Model = "New Model";
+        bus.Capacity = 50;
+
+        Console.WriteLine(bus.ToString());
+
+        // Save the modified state to the caretaker
+        busCareTaker.AddMemento(bus.SaveToMemento());
+
+        // Undo the last change
+        bus.RestoreFromMemento(busCareTaker.GetMemento(0));
+
+        Console.WriteLine(bus.ToString());
+        return bus;
     }
 }
