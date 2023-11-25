@@ -25,9 +25,9 @@ public class ScheduleService
         return await _scheduleRepository.GetAll();
     }
 
-    public async Task<Schedule> UpdateSchedule(Schedule schedule, ScheduleSubject scheduleSubject)
+    public async Task<Schedule> UpdateSchedule(Schedule schedule, ScheduleSubject scheduleSubject, int id)
     {
-        var res = await _scheduleRepository.Update(schedule);
+        var res = await _scheduleRepository.Update(schedule, id);
         scheduleSubject.UpdateSchedule(schedule);
         return res;
     }

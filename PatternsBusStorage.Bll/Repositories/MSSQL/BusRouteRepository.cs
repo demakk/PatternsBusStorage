@@ -63,7 +63,7 @@ public class BusRouteRepository : IRepository<BusRoute>
         return new BusRoute();
     }
 
-    public async Task<BusRoute> Update(BusRoute entity)
+    public async Task<BusRoute> Update(BusRoute entity, int id)
     {
         await using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();

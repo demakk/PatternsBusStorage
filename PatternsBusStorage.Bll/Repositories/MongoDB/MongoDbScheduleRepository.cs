@@ -20,6 +20,11 @@ public class MongoDbScheduleRepository : IScheduleRepository
         throw new NotImplementedException();
     }
 
+    public Task<Schedule> Update(Schedule entity, int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<Schedule> Update(Schedule entity)
     {
         throw new NotImplementedException();

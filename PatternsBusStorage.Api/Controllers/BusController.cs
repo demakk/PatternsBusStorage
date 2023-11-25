@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PatternsBusStorage.Api.DTOs.Bus;
-using PatternsBusStorage.Bll.Repositories;
 using PatternsBusStorage.Bll.Services;
 using PatternsBusStorage.Domain.Aggregates;
-using PatternsBusStorage.Domain.Mementos.Bus;
 
 namespace PatternsBusStorage.Api.Controllers;
 
@@ -26,21 +24,21 @@ public class BusController : ControllerBase
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBus([FromBody] BusCreate bus)
+        public async Task<IActionResult> AddBus([FromBody] BusCreate bus, string role)
         {
                 Bus b = new Bus.BusBuilder(bus.BusNumber, bus.Status)
                         .SetModel(bus.Model)
                         .SetManufacturingYear(bus.ManufacturingYear)
                         .SetCapacity(bus.Capacity)
                         .Build();
-                await _busService.AddBus(b);
+                await _busService.AddBus(b, role);
 
                 return Ok();
         }
 
         [HttpPatch]
         [Route(ApiRoutes.Bus.IdRoute)]
-        public async Task<IActionResult> UpdateBus([FromBody] BusUpdate bus, int id)
+        public async Task<IActionResult> UpdateBus([FromBody] BusUpdate bus, int id, string role)
         {
                 Bus b = new Bus.BusBuilder(bus.BusNumber, bus.Status)
                         .SetModel(bus.Model)
@@ -48,14 +46,14 @@ public class BusController : ControllerBase
                         .SetCapacity(bus.Capacity)
                         .Build();
 
-                var res = await _busService.UpdateBus(b);
+                var res = await _busService.UpdateBus(b, role, id);
         
                 return Ok();
         }
         
         [HttpPatch]
         [Route(ApiRoutes.Bus.NumberRoute)]
-        public async Task<IActionResult> UpdateBusByNumber([FromBody] BusUpdateByNumber bus, string number)
+        public async Task<IActionResult> UpdateBusByNumber([FromBody] BusUpdateByNumber bus, string number, string role)
         {
                 Bus b = new Bus.BusBuilder(number, bus.Status)
                         .SetModel(bus.Model)
@@ -63,7 +61,7 @@ public class BusController : ControllerBase
                         .SetCapacity(bus.Capacity)
                         .Build();
                 
-                var res = await _busService.UpdateBusByNumber(b);
+                var res = await _busService.UpdateBusByNumber(b, role);
                 
                 return Ok();
         }

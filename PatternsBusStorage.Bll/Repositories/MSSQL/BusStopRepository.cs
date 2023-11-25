@@ -62,7 +62,7 @@ private readonly string _connectionString;
         return new BusStop();
     }
 
-    public async Task<BusStop> Update(BusStop entity)
+    public async Task<BusStop> Update(BusStop entity, int id)
     {
         await using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();

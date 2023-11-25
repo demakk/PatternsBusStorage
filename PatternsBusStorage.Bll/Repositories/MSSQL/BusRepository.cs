@@ -79,12 +79,12 @@ public class BusRepository : IBusRepository
         return new Bus();
     }
 
-    public async Task<Bus> Update(Bus entity)
+    public async Task<Bus> Update(Bus entity, int id)
     {
         await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 
         var bus = new
-            {entity.BusId, entity.BusNumber, entity.Model, entity.ManufacturingYear, entity.Capacity, entity.Status};
+            {entity.BusNumber, entity.Model, entity.ManufacturingYear, entity.Capacity, entity.Status, id};
 
         var sql = "UPDATE Bus SET BusNumber = @BusNumber, Model = @Model," +
                   " ManufacturingYear = @ManufacturingYear, Capacity = @Capacity, Status = @Status" +
@@ -95,7 +95,6 @@ public class BusRepository : IBusRepository
         if (res < 1) { throw new 
                 RecordNotFoundException
                 ($"The bus with id {entity.BusId} not found in the database, and could not be updated"); }
-        _sqlConnectionPool.ReturnConnection(connection);
         return new Bus();
     }
     

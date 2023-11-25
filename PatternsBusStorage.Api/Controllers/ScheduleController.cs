@@ -50,7 +50,7 @@ public class ScheduleController : ControllerBase
         var res = await _scheduleService
             .UpdateSchedule(new Schedule{ScheduleId = id, BusId = schedule.BusId,
                 StopId = schedule.StopId, DepartureTime = schedule.DepartureTime,
-                ArrivalTime = schedule.ArrivalTime}, busScheduleSubject);
+                ArrivalTime = schedule.ArrivalTime}, busScheduleSubject, 0);
 
         return Ok();
     }

@@ -24,9 +24,9 @@ public class BusRouteService
         return await _busRouteRepository.GetAll();
     }
 
-    public async Task<BusRoute> UpdateBusRoute(BusRoute busRoute)
+    public async Task<BusRoute> UpdateBusRoute(BusRoute busRoute, int id)
     {
-        return await _busRouteRepository.Update(busRoute);
+        return await _busRouteRepository.Update(busRoute, id);
     }
 
     public async Task<BusRoute> GetBusRouteById(int id)

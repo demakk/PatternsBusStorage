@@ -24,9 +24,9 @@ public class CityServices
         return await _cityRepository.GetAll();
     }
 
-    public async Task<City> UpdateCity(City city)
+    public async Task<City> UpdateCity(City city, int id)
     {
-        return await _cityRepository.Update(city);
+        return await _cityRepository.Update(city, id);
     }
 
     public async Task<City> GetCityById(int id)

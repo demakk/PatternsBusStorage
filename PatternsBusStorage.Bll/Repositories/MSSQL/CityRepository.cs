@@ -64,7 +64,7 @@ public class CityRepository : IRepository<City>
         return new City();
     }
 
-    public async Task<City> Update(City entity)
+    public async Task<City> Update(City entity, int id)
     {
         await using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();

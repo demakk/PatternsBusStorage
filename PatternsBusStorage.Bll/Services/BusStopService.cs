@@ -24,9 +24,9 @@ public class BusStopService
         return await _busStopRepository.GetAll();
     }
 
-    public async Task<BusStop> UpdateBusStop(BusStop busStop)
+    public async Task<BusStop> UpdateBusStop(BusStop busStop, int id)
     {
-        return await _busStopRepository.Update(busStop);
+        return await _busStopRepository.Update(busStop, id);
     }
 
     public async Task<BusStop> GetBusStopById(int id)

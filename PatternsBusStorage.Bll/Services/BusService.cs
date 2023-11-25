@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PatternsBusStorage.Application.Repositories;
+using PatternsBusStorage.Bll.DTOs;
 using PatternsBusStorage.Bll.Factories;
 using PatternsBusStorage.Bll.Repositories;
+using PatternsBusStorage.Bll.Repositories.Proxy;
 using PatternsBusStorage.Dal;
 using PatternsBusStorage.Domain.Aggregates;
 using PatternsBusStorage.Domain.Mementos.Bus;
@@ -10,48 +12,47 @@ namespace PatternsBusStorage.Bll.Services;
 
 public class BusService
 {
-    private readonly IBusRepository _busRepository;
+    private readonly BusProxyRepository _busProxyRepository;
 
-    public BusService(IConfiguration configuration)
+    public BusService(BusProxyRepository busProxyRepository)
     {
-        var sql = new MssqlDbFactory(configuration);
-        _busRepository = sql.CreateBusRepository();
+        _busProxyRepository = busProxyRepository;
     }
 
-    public async Task<Bus> AddBus(Bus bus)
+    public async Task<Bus> AddBus(Bus bus, string userRole)
     {
-        await _busRepository.Add(bus);
+        await _busProxyRepository.Add(bus, userRole);
         return new Bus();
     }
-    
+
     public async Task<IEnumerable<Bus>> GetAllBuses()
     {
-        return await _busRepository.GetAll();
+        return await _busProxyRepository.GetAll();
     }
 
-    public async Task<Bus> UpdateBus(Bus bus)
+    public async Task<Bus> UpdateBus(Bus bus, string userRole, int id)
     {
-        return await _busRepository.Update(bus);
+        return await _busProxyRepository.Update(bus, userRole,id);
     }
-    
-    public async Task<Bus> UpdateBusByNumber(Bus bus)
+
+    public async Task<Bus> UpdateBusByNumber(Bus bus, string userRole)
     {
-        return await _busRepository.UpdateBusByNumber(bus);
+        return await _busProxyRepository.UpdateBusByNumber(bus, userRole);
     }
 
     public async Task<Bus> GetBusById(int id)
     {
-        return await _busRepository.GetById(id);
+        return await _busProxyRepository.GetById(id);
     }
-    
+
     public async Task<Bus> GetBusByNumber(string number)
     {
-        return await _busRepository.GetBusByNumber(number);
+        return await _busProxyRepository.GetBusByNumber(number);
     }
 
     public async Task<Bus> TestMemento(int id)
     {
-        var bus  = await _busRepository.GetById(id);
+        var bus  = await _busProxyRepository.GetById(id);
         
         // Instantiate the BusCareTaker
         var busCareTaker = new BusCareTaker();

@@ -60,7 +60,7 @@ public class ScheduleRepository : IScheduleRepository
         return new Schedule();
     }
 
-    public async Task<Schedule> Update(Schedule entity)
+    public async Task<Schedule> Update(Schedule entity, int id)
     {
         await using var connection = await _sqlConnectionPool.GetConnectionAsync();
 

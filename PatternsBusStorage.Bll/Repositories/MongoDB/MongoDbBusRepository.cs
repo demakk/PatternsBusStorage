@@ -20,6 +20,11 @@ public class MongoDbBusRepository : IBusRepository
         throw new NotImplementedException();
     }
 
+    public Task<Bus> Update(Bus entity, int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<Bus> Update(Bus entity)
     {
         throw new NotImplementedException();
